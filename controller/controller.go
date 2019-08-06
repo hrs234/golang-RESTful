@@ -20,49 +20,50 @@ func ShowAllItems(w http.ResponseWriter, r *http.Request) {
 	db := database.Connect()
 	defer db.Close()
 
-	
-	SQL := "select * from item"
-	
-
 	queryID := r.URL.Query().Get("id")
 	querySearch := r.URL.Query().Get("search")
 
+	rows, err := db.Query("select * from item")
+
 	if queryID != "" {
-		
-		SQL = "select * from item where id = '"+queryID+"'"	
-		
-		
+		rows, err = db.Query("select * from item where id = ?", queryID)
+
 	} else if querySearch != "" {
-		
-		SQL = "select * from item where item_id like '%"+querySearch+"%'"
-		
+		rows, err = db.Query("select * from item where item_id like '%" + querySearch + "%'")
+
 	}
-	
-	rows, err := db.Query(SQL)
-	
+
+	// SQL := "select * from item"
+
+	// if queryID != "" {
+
+	// 	SQL = "select * from item where id = '"+queryID+"'"
+
+	// } else if querySearch != "" {
+
+	// 	SQL = "select * from item where item_id like '%"+querySearch+"%'"
+
+	// }
+
 	if err != nil {
-			log.Print(err)
-		} 
-		
-		
-		for rows.Next() {
-			if err := rows.Scan(&Item.Id, &Item.Item_id, &Item.Kategori_id); err != nil {
-				log.Fatal(err.Error())
-	
-			} else {
-				arrItem = append(arrItem, Item)
-			}
+		log.Print(err)
+	}
+
+	for rows.Next() {
+		if err := rows.Scan(&Item.Id, &Item.Item_id, &Item.Kategori_id); err != nil {
+			log.Fatal(err.Error())
+
+		} else {
+			arrItem = append(arrItem, Item)
 		}
+	}
 
-		response.Status = 1
-		response.Message = "Success"
-		response.Data = arrItem
-			
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(response)
-	
+	response.Status = 1
+	response.Message = "Success"
+	response.Data = arrItem
 
-
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 
 }
 

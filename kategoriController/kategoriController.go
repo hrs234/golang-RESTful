@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-
+	
 	"../database"
 	"../models"
 	"github.com/gorilla/mux"
@@ -20,22 +20,20 @@ func ShowAllKategori(w http.ResponseWriter, r *http.Request) {
 	db := database.Connect()
 	defer db.Close()
 
-	SQL := "select * from kategori"
+	// SQL := "select * from kategori"
 
 	queryID := r.URL.Query().Get("id")
 	querySearch := r.URL.Query().Get("search")
 
-	if queryID != "" {
+	rows, err := db.Query("select * from kategori")
 
-		SQL = "select * from kategori where id = '" + queryID + "'"
+	if queryID != "" {
+		rows, err = db.Query("select * from kategori where id = ?", queryID)
 
 	} else if querySearch != "" {
-
-		SQL = "select * from kategori where kategori like '%" + querySearch + "%'"
+		rows, err = db.Query("select * from kategori where kategori like '%" + querySearch + "%'")
 
 	}
-
-	rows, err := db.Query(SQL)
 
 	if err != nil {
 		log.Print(err)
