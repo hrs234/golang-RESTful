@@ -37,6 +37,8 @@
 
   - and type ` go run main.go ` to start the server
   
+  <small>Notes: for password and username database can checked in `database/database.go` you can edit in here `[MYSQL_SERVER_DATABASE_USERNAME]:[MYSQL_SERVER_PASSWORD]@tcp("+host+":"+dbPort+")/"+dbName` </small>
+  
 
 - ## used external package
   

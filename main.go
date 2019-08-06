@@ -7,6 +7,7 @@ import (
 
 	"os"
 
+	"./Signin"
 	"./controller"
 	"./kategoriController"
 
@@ -28,6 +29,8 @@ func main() {
 	router := mux.NewRouter()
 
 	// Routes
+	router.HandleFunc("/api/Signin", Signin.SignIn).Methods("POST")
+
 	router.HandleFunc("/api/Item", controller.ShowAllItems).Methods("GET")
 	router.HandleFunc("/api/Item", controller.InsertItemData).Methods("POST")
 	router.HandleFunc("/api/Item/{id:[0-9]+}", controller.UpdateItemData).Methods("PUT")

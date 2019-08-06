@@ -13,6 +13,37 @@ import (
 
 // showAllItems showing all field table of item
 func ShowAllItems(w http.ResponseWriter, r *http.Request) {
+
+	// c, err := r.Cookie("access-token")
+	// if err != nil {
+	// 	if err == http.ErrNoCookie {
+	// 		w.WriteHeader(401)
+	// 		w.Write([]byte("Token not provided"))
+	// 	}
+	// 	w.WriteHeader(400)
+	// 	log.Panic(err)
+	// }
+
+	// storeTkn := c.Value
+	// claims := &Signin.Claim{}
+
+	// Tkn, err := jwt.ParseWithClaims(storeTkn, claims, func(token *jwt.Token) (interface{}, error) {
+	// 	return Signin.MyJWT, nil
+	// })
+	// if err != nil {
+	// 	if err == jwt.ErrSignatureInvalid {
+	// 		w.WriteHeader(http.StatusUnauthorized)
+	// 		w.Write([]byte("Unauthorized..."))
+	// 	}
+	// 	w.WriteHeader(400)
+	// }
+
+	// if !Tkn.Valid {
+	// 	w.WriteHeader(401)
+	// 	w.Write([]byte("Token is incorrect"))
+	// }
+
+	/////////////////////////
 	var Item models.Item
 	var arrItem []models.Item
 	var response models.ResponseItem
@@ -32,18 +63,6 @@ func ShowAllItems(w http.ResponseWriter, r *http.Request) {
 		rows, err = db.Query("select * from item where item_id like '%" + querySearch + "%'")
 
 	}
-
-	// SQL := "select * from item"
-
-	// if queryID != "" {
-
-	// 	SQL = "select * from item where id = '"+queryID+"'"
-
-	// } else if querySearch != "" {
-
-	// 	SQL = "select * from item where item_id like '%"+querySearch+"%'"
-
-	// }
 
 	if err != nil {
 		log.Print(err)
